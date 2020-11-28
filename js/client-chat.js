@@ -130,7 +130,7 @@
 				app.addPopupMessage("Your message is too long.");
 				return;
 			} else if (text) {
-				this.send(text);
+				this.send(text, e.ctrlKey);
 			}
 			this.$chatbox.val('');
 			this.$chatbox.trigger('keyup'); // force a resize

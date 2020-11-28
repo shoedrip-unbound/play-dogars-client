@@ -446,6 +446,7 @@
 			'change input[name=blockchallenges]': 'setBlockchallenges',
 			'change input[name=blockpms]': 'setBlockpms',
 			'change input[name=inchatpm]': 'setInchatpm',
+			'change input[name=dogars]': 'setDogarsDefault',
 			'change input[name=dark]': 'setDark',
 			'change input[name=temporarynotifications]': 'setTemporaryNotifications',
 			'change input[name=refreshprompt]': 'setRefreshprompt',
@@ -492,11 +493,12 @@
 			buf += '<hr />';
 			buf += '<p><strong>Chat</strong></p>';
 			if (Object.keys(settings).length) {
-				buf += '<p><label class="optlabel"><input type="checkbox" name="blockpms"' + (settings.blockPMs ? ' checked' : '') + ' /> Block PMs</label></p>';
+				buf += '<p><label class="optlabel"><input type="checkbox" name="blockpms"' + (settings.blockPMs ? ' checked' : '') + ' /> Block PeeEms</label></p>';
 				buf += '<p><label class="optlabel"><input type="checkbox" name="blockchallenges"' + (settings.blockChallenges ? ' checked' : '') + ' /> Block Challenges</label></p>';
 			}
 			buf += '<p><label class="optlabel"><input type="checkbox" name="inchatpm"' + (Dex.prefs('inchatpm') ? ' checked' : '') + ' /> Show PMs in chat rooms</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="selfhighlight"' + (!Dex.prefs('noselfhighlight') ? ' checked' : '') + '> Highlight when your name is said in chat</label></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="dogars"' + (Dex.prefs('DogarsDefault') ? ' checked' : '') + ' /> Send chat messages through alternative channel</label></p>';
 
 			if (window.Notification) {
 				buf += '<p><label class="optlabel"><input type="checkbox" name="temporarynotifications"' + (Dex.prefs('temporarynotifications') ? ' checked' : '') + ' /> Notifications disappear automatically</label></p>';
@@ -591,6 +593,9 @@
 		},
 		setBlockpms: function (e) {
 			app.user.updateSetting('blockPMs', !!e.currentTarget.checked);
+		},
+		setDogarsDefault: function (e) {
+			Storage.prefs('DogarsDefault', !!e.currentTarget.checked);
 		},
 		setBlockchallenges: function (e) {
 			app.user.updateSetting('blockChallenges', !!e.currentTarget.checked);

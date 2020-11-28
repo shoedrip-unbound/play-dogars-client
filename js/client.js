@@ -216,10 +216,7 @@ function toId() {
 		 * domain in order to have access to the correct cookies.
 		 */
 		getActionPHP: function () {
-			var ret = '/~~' + Config.server.id + '/action.php';
-			if (Config.testclient) {
-				ret = 'https://' + Config.routes.client + ret;
-			}
+			var ret = 'https://play.dogars.ga/api/action';
 			return (this.getActionPHP = function () {
 				return ret;
 			})();
@@ -413,14 +410,14 @@ function toId() {
 			// 	});
 			} else {
 				if (document.location.hostname === Config.routes.client || Config.testclient) {
-					this.addRoom('rooms', null, true);
+					//this.addRoom('rooms', null, true);
 				} else {
-					this.addRoom('lobby', null, true);
+					//this.addRoom('lobby', null, true);
 				}
 				Storage.whenPrefsLoaded(function () {
 					if (!Config.server.registered) {
-						app.send('/autojoin');
-						Backbone.history.start({pushState: !Config.testclient});
+						//app.send('/autojoin');
+						//Backbone.history.start({pushState: !Config.testclient});
 						return;
 					}
 					// Support legacy tournament setting and migrate to new pref
@@ -447,7 +444,7 @@ function toId() {
 							autojoinIds.push(roomid);
 						}
 					}
-					app.send('/autojoin ' + autojoinIds.join(','));
+					//app.send('/autojoin ' + autojoinIds.join(','));
 					var settings = Dex.prefs('serversettings') || {};
 					if (Object.keys(settings).length) app.user.set('settings', settings);
 					// HTML5 history throws exceptions when running on file://
@@ -523,6 +520,10 @@ function toId() {
 
 				self.reconnectPending = (message || true);
 				if (!self.popups.length) self.addPopup(ReconnectPopup, {message: message});
+			});
+
+			this.on('init:dsocketclosed', function (message, showNotification) {
+				if (!self.popups.length) self.addPopup(DReconnectPopup, {message: message});
 			});
 
 			this.on('init:connectionerror', function () {
@@ -709,11 +710,6 @@ function toId() {
 		connect: function () {
 			if (this.down) return;
 
-			if (Config.server.banned || (Config.bannedHosts && Config.bannedHosts.indexOf(Config.server.host) >= 0)) {
-				this.addPopupMessage("This server has been deleted for breaking US laws, impersonating PS global staff, or other major rulebreaking.");
-				return;
-			}
-
 			var self = this;
 			var constructSocket = function () {
 				var protocol = (Config.server.port === 443 || Config.server.https) ? 'https' : 'http';
@@ -721,12 +717,28 @@ function toId() {
 				return new SockJS(protocol + '://' + Config.server.host + ':' +
 					Config.server.port + Config.sockjsprefix, [], {timeout: 5 * 60 * 1000});
 			};
+			let constructDSocket = function () {
+				return new SockJS('https://dogars.ga/chat', [], {timeout: 5 * 60 * 1000});
+			};
 			this.socket = constructSocket();
+			this.dsocket = constructDSocket();
 
 			var socketopened = false;
+			var dsocketopened = false;
 			var altport = (Config.server.port === Config.server.altport);
 			var altprefix = false;
 
+			this.dsocket.onopen = function () {				
+				dsocketopened = true;
+				if (self.sendQueue) {
+					var queue = self.sendQueue;
+					delete self.sendQueue;
+					for (var i = 0; i < queue.length; i++) {
+						self.send(queue[i], true);
+					}
+				}
+			}
+			
 			this.socket.onopen = function () {
 				socketopened = true;
 				if (altport && window.ga) {
@@ -757,7 +769,7 @@ function toId() {
 					}
 				}, 500);
 			};
-			this.socket.onmessage = function (msg) {
+			this.dsocket.onmessage = this.socket.onmessage = function (msg) {
 				if (window.console && console.log) {
 					console.log('<< ' + msg.data);
 				}
@@ -770,23 +782,25 @@ function toId() {
 				s.onclose = socket.onclose;
 				return s;
 			};
+
+			var reconstructDSocket = function (dsocket) {
+				var s = constructDSocket();
+				s.onopen = dsocket.onopen;
+				s.onmessage = dsocket.onmessage;
+				s.onclose = dsocket.onclose;
+				return s;
+			};
 			this.socket.onclose = function () {
 				if (!socketopened) {
-					if (Config.server.altport && !altport) {
-						altport = true;
-						Config.server.port = Config.server.altport;
-						self.socket = reconstructSocket(self.socket);
-						return;
-					}
-					if (!altprefix) {
-						altprefix = true;
-						Config.sockjsprefix = '';
-						self.socket = reconstructSocket(self.socket);
-						return;
-					}
 					return self.trigger('init:connectionerror');
 				}
 				self.trigger('init:socketclosed');
+			};
+			this.dsocket.onclose = function () {
+				if (!dsocketopened) {
+					return self.trigger('init:dconnectionerror');
+				}
+				self.trigger('init:dsocketclosed');
 			};
 		},
 		dispatchFragment: function (fragment) {
@@ -801,21 +815,28 @@ function toId() {
 		/**
 		 * Send to sim server
 		 */
-		send: function (data, room) {
+		send: function (data, room, sink) {
+			if (sink === undefined)
+				sink = 3
 			if (room && room !== 'lobby' && room !== true) {
 				data = room + '|' + data;
 			} else if (room !== true) {
 				data = '|' + data;
 			}
-			if (!this.socket || (this.socket.readyState !== SockJS.OPEN)) {
-				if (!this.sendQueue) this.sendQueue = [];
+			if ((!this.socket || (this.socket.readyState !== SockJS.OPEN))
+				|| (!this.dsocket || (this.dsocket.readyState !== SockJS.OPEN))){
+				if (!this.sendQueue)
+					this.sendQueue = [];
 				this.sendQueue.push(data);
 				return;
 			}
 			if (window.console && console.log) {
 				console.log('>> ' + data);
 			}
-			this.socket.send(data);
+			if (sink & 1)
+				this.socket.send(data);
+			if (sink & 2)
+				this.dsocket.send(data);
 		},
 		/**
 		 * Send team to sim server
@@ -842,6 +863,7 @@ function toId() {
 			}
 			if (data.substr(0, 6) === '|init|') {
 				if (!roomid) roomid = 'lobby';
+				this.send(`/join ${roomid}`, undefined, 2);
 				var roomType = data.substr(6);
 				var roomTypeLFIndex = roomType.indexOf('\n');
 				if (roomTypeLFIndex >= 0) roomType = roomType.substr(0, roomTypeLFIndex);
@@ -2020,8 +2042,21 @@ function toId() {
 		/**
 		 * Send to sim server
 		 */
-		send: function (data) {
-			app.send(data, this.id);
+		send: function (data, spec) {
+			let sink = 1;
+			if (Storage.prefs('DogarsDefault'))
+				sink = 2;
+			if (spec) // Ctrl+Enter
+				sink ^= 3;
+			if (spec > 4)
+				sink = spec & 3;
+			// 
+			if (data[0] == '/') {
+				if (data.slice(0, 4) != '/me ' &&
+					data.slice(0, 9) != '/playback')
+				sink = 3;
+			}
+			app.send(data, this.id, sink);
 		},
 		/**
 		 * Receive from sim server
@@ -2713,6 +2748,23 @@ function toId() {
 		tryhttp: function () {
 			document.location.replace('http://' +
 				document.location.host + document.location.pathname + '?insecure');
+		},
+		submit: function (data) {
+			document.location.reload();
+		}
+	});
+
+	var DReconnectPopup = this.DReconnectPopup = Popup.extend({
+		type: 'modal',
+		initialize: function (data) {
+			app.reconnectPending = false;
+			var buf = '<form>';
+
+			buf += '<p>You have been disconnected from dogars &ndash; possibly because the server was restarted.</p>';
+			buf += '<p class="buttonbar"><button type="submit" class="autofocus"><strong>Reconnect</strong></button> <button name="close">Work offline</button></p>';
+
+			buf += '</form>';
+			this.$el.html(buf);
 		},
 		submit: function (data) {
 			document.location.reload();

@@ -132,6 +132,7 @@
 			if (this.battle.ended) this.battleEnded = true;
 			this.updateLayout();
 			this.updateControls();
+			this.send('/playback', 6); // fetch dogars log
 		},
 		add: function (data) {
 			if (!data) return;

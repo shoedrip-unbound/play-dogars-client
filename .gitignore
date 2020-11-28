@@ -2,7 +2,6 @@
 /audio/
 /config/
 /index.php
-/index.html
 /preactalpha.html
 /crossprotocol.html
 /data/*
@@ -52,3 +51,4 @@ package-lock.json
 /website/.pages-cached/
 /website/files/
 /website/images/
+*~

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<!--
+           .............
+       ,...................
+     ,..................========
+    ....~=##############=======+
+   ...##################=======.
+  ..=######+...,    +##=======,..
+  ..=###### ., .....  +=====+,....
+     ###########~,..  ======
+  .....##############~=====+....., pokemonshowdown.com
+  ..........###########====......
+    ............#######,==......
+  =###.,........+#####+ .......
+  ####################~......,
+  #################+======,
+     ++++++++++++ =======+
+
+Viewing source? We're open source! Check us out on GitHub!
+https://github.com/Zarel/Pokemon-Showdown
+https://github.com/Zarel/Pokemon-Showdown-Client (you are here)
+
+Also visit us in the Dev chatroom:
+https://psim.us/dev
+
+-->
+<meta charset="UTF-8" />
+<meta id="viewport" name="viewport" content="width=device-width" />
+<title>Showdown!</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<link rel="shortcut icon" href="//play.dogars.ga/favicon.ico" id="dynamic-favicon" />
+<link rel="icon" sizes="128x128" href="//play.dogars.ga/favicon-128.png" />
+<link rel="stylesheet" href="//play.dogars.ga/style/battle.css?93ec63dc" />
+<link rel="stylesheet" href="//play.dogars.ga/style/client.css?2336c94b" />
+<link rel="stylesheet" href="//play.dogars.ga/style/sim-types.css?dad3cdf0" />
+<link rel="stylesheet" href="//play.dogars.ga/style/utilichart.css?e39c48cf" />
+<link rel="stylesheet" href="//play.dogars.ga/style/font-awesome.css?932f42c7" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="manifest" href="/manifest.json" />
+<meta name="google-signin-client_id" content="912270888098-jjnre816lsuhc5clj3vbcn4o2q7p4qvk.apps.googleusercontent.com">
+<!--[if lte IE 8]><script>document.location.replace('http://pokemonshowdown.com/autodownload/win');</script><![endif]-->
+<!-- Google Analytics -->
+<!-- End Google Analytics -->
+
+<div id="header" class="header">
+	<img class="logo" src="//play.pokemonshowdown.com/pokemonshowdownbeta.png" srcset="//play.pokemonshowdown.com/pokemonshowdownbeta@2x.png 2x" alt="Pok&eacute;mon Showdown! (beta)" width="146" height="44" /><div class="maintabbarbottom"></div>
+</div>
+<div class="ps-room scrollable" id="mainmenu"><div class="mainmenuwrapper">
+	<div class="leftmenu">
+		<div class="activitymenu">
+			<div class="pmbox">
+				<div class="pm-window news-embed" data-newsid="<!-- newsid -->">
+					<h3><button class="closebutton" tabindex="-1"><i class="fa fa-times-circle"></i></button><button class="minimizebutton" tabindex="-1"><i class="fa fa-minus-circle"></i></button>News</h3>
+					<div class="pm-log" style="max-height:none">
+					  <div class="newsentry" data-newsid="300" data-date="1606481833">
+					    <h4>*tink* *tink* *tink*</h4>
+					    <p>Ahem! First of all, fuck jannies.</p>
+					    <p>By default, this custom client behaves the same as regular showdown (at least it's supposed to, there's a few cosmetic bugs here and there, also initial loading seems to hang, so refresh if that happens),
+					      except you can read messages sent through a "hidden" chat in battles. These messages aren't visible to other showdown users. To send a message, hold the control key when pressing enter to send your message, otherwise your message will also be sent to showdown. A triangle will appear next to messages sent through this chat. You can instead send messages to the secret chat by default, and press control to send to showdown, see the option cog. Fuck jannies.</p>
+					    <p>—<strong>literally me</strong> <small class="date">on Nov 27, 2020</small></p>
+					    </div><div class="newsentry" data-newsid="300" data-date="1606481833">
+					    <h4>Also</h4>
+					    <p>
+					      Because of security policies, dogars is used as a login server, which means your credentials
+					      are proxied through my server before reaching showdown.
+					      This also means they can know the IPs of everyone that uses this client and ban/lock you.
+					      And they can also kill this by simply banning my server from doing logins.
+					      That is, until zarle or others decide to
+					      allow dogars to do cross-domain requests, which will allow me to directly log you in
+					      without exposing your credentials to dogars, or them knowing that you use this client.
+					    </p>
+					    <p>—<strong>literally me</strong> <small class="date">on Nov 27, 2020</small></p>
+					  </div>
+						<!-- news -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mainmenu">
+			<div id="loading-message" class="mainmessage">Initializing... <noscript>FAILED<br /><br />Pok&eacute;mon Showdown requires JavaScript.</noscript></div>
+		</div>
+	</div>
+	<div class="rightmenu">
+	</div>
+	<div class="mainmenufooter">
+		<div class="bgcredit"></div>
+		<small><a href="//dex.pokemonshowdown.com/" target="_blank">Pok&eacute;dex</a> | <a href="//replay.pokemonshowdown.com/" target="_blank">Replays</a> | <a href="//pokemonshowdown.com/rules" target="_blank">Rules</a> | <a href="//pokemonshowdown.com/credits" target="_blank">Credits</a> | <a href="http://smogon.com/forums/" target="_blank">Forum</a></small>
+	</div>
+</div></div>
+<script>
+	var LM = document.getElementById('loading-message');
+	LM.innerHTML += ' DONE<br />Loading libraries...';
+</script>
+<script nomodule src="//play.dogars.ga/js/lib/ps-polyfill.js"></script>
+<script src="//play.dogars.ga/config/config.js?679f4507"></script>
+<script src="//play.dogars.ga/js/lib/jquery-2.1.4.min.js"></script>
+<script src="//play.dogars.ga/js/lib/jquery-cookie.js"></script>
+<script src="//play.dogars.ga/js/lib/autoresize.jquery.min.js?6d0545f7"></script>
+<script src="//play.dogars.ga/js/battle-sound.js?16512e2e"></script>
+<script src="//play.dogars.ga/js/lib/html-css-sanitizer-minified.js?803e34bd"></script>
+<script src="//play.dogars.ga/js/lib/lodash.core.js?e9be4c2d"></script>
+<script src="//play.dogars.ga/js/lib/backbone.js?8a8d8296"></script>
+<script src="//play.dogars.ga/js/lib/d3.v3.min.js"></script>
+
+<script>
+	LM.innerHTML += ' DONE<br />Loading data...';
+</script>
+
+<script src="//play.pokemonshowdown.com/js/battledata.js?ae5e5c3b"></script>
+<script src="//play.dogars.ga/js/storage.js?a87b954b"></script>
+<script src="//play.pokemonshowdown.com/data/pokedex-mini.js?0.6040794035420711"></script>
+<script src="//play.pokemonshowdown.com/data/typechart.js?0.9525546743634346"></script>
+<script src="//play.pokemonshowdown.com/js/battle.js?1785fca3"></script>
+<script src="//play.pokemonshowdown.com/js/lib/sockjs-1.4.0-nwjsfix.min.js"></script>
+<script src="//play.pokemonshowdown.com/js/lib/color-thief.min.js"></script>
+
+<script>
+	LM.innerHTML += ' DONE<br />Loading client...';
+</script>
+
+<script src="//play.dogars.ga/js/client.js?296bccb7"></script>
+<script src="//play.dogars.ga/js/client-topbar.js?1fb3d109"></script>
+<script src="//play.dogars.ga/js/client-mainmenu.js?8eeca4e5"></script>
+<script src="//play.dogars.ga/js/client-teambuilder.js?1838e3d3"></script>
+<script src="//play.dogars.ga/js/client-ladder.js?faf527e1"></script>
+<script src="//play.dogars.ga/js/client-chat.js?3f363cff"></script>
+<script src="//play.dogars.ga/js/client-chat-tournament.js?538ba836"></script>
+<script src="//play.dogars.ga/js/battle-tooltips.js?b73e034e"></script>
+<script src="//play.dogars.ga/js/client-battle.js?d0267c51"></script>
+<script src="//play.dogars.ga/js/client-rooms.js?b8e8f850"></script>
+<script src="//play.pokemonshowdown.com/data/graphics.js?0.9316873781392478"></script>
+
+<script>
+	var app = new App();
+</script>
+
+<script src="//play.pokemonshowdown.com/data/pokedex.js?0.3809345380119784"></script>
+<script src="//play.pokemonshowdown.com/data/moves.js?0.31316886803767296"></script>
+<script src="//play.pokemonshowdown.com/data/items.js?0.07260085792739956"></script>
+<script src="//play.pokemonshowdown.com/data/abilities.js?0.34530521689862725"></script>
+
+<script src="//play.pokemonshowdown.com/data/search-index.js?0.916686251926438"></script>
+<script src="//play.pokemonshowdown.com/data/teambuilder-tables.js?0.8987207807892226"></script>
+<script src="//play.pokemonshowdown.com/js/battle-dex-search.js?4e52d655"></script>
+<script src="//play.pokemonshowdown.com/js/search.js?8de5bade"></script>
+
+<script src="//play.pokemonshowdown.com/data/aliases.js?0.41596460233678956" async="async"></script>
+<!--<script src="//play.dogars.ga/js/userscript.js?0.41596460233678956" async="async"></script>-->
