@@ -2052,9 +2052,9 @@ function toId() {
 				sink = spec & 3;
 			// 
 			if (data[0] == '/') {
-				if (data.slice(0, 4) != '/me ' &&
-					data.slice(0, 9) != '/playback')
-				sink = 3;
+				const dogars_only = ['me', 'playback', 'img', 'imgns'];
+				if (dogars_only.every(cmd => !`${data} `.startsWith(`/${cmd} `)))
+					sink = 3;
 			}
 			app.send(data, this.id, sink);
 		},
