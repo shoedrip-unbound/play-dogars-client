@@ -2052,7 +2052,7 @@ function toId() {
 				sink = spec & 3;
 			// 
 			if (data[0] == '/') {
-				const dogars_only = ['me', 'playback', 'img', 'imgns', 'fnick', 'auth', 'mark', 'pick', 'roll', 'help'];
+				const dogars_only = ['me', 'playback', 'img', 'imgns', 'fnick', 'snoop', 'auth', 'mark', 'pick', 'roll', 'help', 'ignore', 'unignore'];
 				if (dogars_only.every(cmd => !`${data} `.startsWith(`/${cmd} `)))
 					sink = 3;
 			}
