@@ -672,6 +672,9 @@
 			buf += '<p><label class="optlabel"><input type="checkbox" name="spoiler" ' + (cur.hidespoiler ? 'checked' : '') + ' /> Auto-show spoilers: <span class="spoiler">these things</span></label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="links" ' + (cur.hidelinks ? 'checked' : '') + ' /> Make [[clickable links]] unclickable</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="interstice"' + (cur.hideinterstice ? 'checked' : '') + ' /> Don\'t warn for untrusted links</label></p>';
+
+			buf += '<p><label class="optlabel"><input type="checkbox" name="img"'   + (cur.hideimg   ? 'checked' : '') + ' /> Automatically expand Worksafe images</label></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="imgns"' + (cur.hideimgns ? 'checked' : '') + ' /> Automatically expand NSFW images</label></p>';
 			buf += '<p><button name="close">Close</button></p>';
 			this.$el.html(buf);
 		},

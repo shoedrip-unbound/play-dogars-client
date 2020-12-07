@@ -159,6 +159,20 @@ class BattleLog {
 			divHTML = BattleLog.escapeHTML(args[1]);
 			break;
 
+		case '@': // dogars special command
+			let obj = JSON.parse(args[1]);
+			switch (obj.cmd) {
+			    case 'img':
+			    case 'imgns':
+				let hid = (Dex.prefs('chatformatting') || {})['hide' + obj.cmd];
+				const hidden = `<details ontoggle="this.children[1].src = '${obj.url}';"><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img style="max-width: 400px; max-height: 400px;"/></details>`
+				const shown = `<details open><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img src="${obj.url}" style="max-width: 400px; max-height: 400px;"/></details>`
+				divHTML = BattleLog.sanitizeHTML(!hid ? hidden : shown);
+				this.add(['c', obj.name, '/me uploaded an image:']);
+				break;
+			}
+			break;
+
 		case 'chatmsg-raw': case 'raw': case 'html':
 			divHTML = BattleLog.sanitizeHTML(args[1]);
 			break;
