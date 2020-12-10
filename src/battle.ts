@@ -3419,7 +3419,7 @@ class Battle {
 	}
 
 	run(str: string, preempt?: boolean) {
-		if (!preempt && this.preemptActivityQueue.length && str === this.preemptActivityQueue[0]) {
+		if (!preempt && this.preemptActivityQueue.length && this.preemptActivityQueue.includes(str)) {
 			this.preemptActivityQueue.shift();
 			this.scene.preemptCatchup();
 			return;
