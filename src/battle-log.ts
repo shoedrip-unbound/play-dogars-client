@@ -177,6 +177,7 @@ class BattleLog {
 			divHTML = BattleLog.sanitizeHTML(args[1]);
 			if (args[1].includes('invite') &&
 			    args[1].includes('broadcast-red') && 
+			    app.rooms[this.scene?.battle!.roomid].battle.playbackState &&
 			    Dex.prefs("automodoff")) {
 				app.rooms[this.scene?.battle!.roomid].send('/modjoin off', 4 | 1)
 			}
