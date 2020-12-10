@@ -214,7 +214,7 @@ if (!Storage.bg.id) {
 // localStorage is banned, and since prefs are cached in other
 // places in certain cases.
 
-Storage.origin = 'https://play.dogars.ga';
+Storage.origin = `https://${Config.sdomain}`;
 
 Storage.prefs = function (prop, value, save) {
 	if (value === undefined) {

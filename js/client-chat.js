@@ -1705,6 +1705,7 @@
 
 			var isHighlighted = userid !== app.user.get('userid') && this.getHighlight(message);
 			var parsedMessage = MainMenuRoom.parseChatMessage(message, name, ChatRoom.getTimestamp('chat', msgTime), isHighlighted, this.$chat, true);
+			console.log('parsed', parsedMessage);
 			if (typeof parsedMessage === 'object' && 'noNotify' in parsedMessage) {
 				mayNotify = mayNotify && !parsedMessage.noNotify;
 				parsedMessage = parsedMessage.message;
