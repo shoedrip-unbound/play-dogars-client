@@ -161,15 +161,21 @@ class BattleLog {
 
 		case '@': // dogars special command
 			let obj = JSON.parse(args[1]);
+			let hid = (Dex.prefs('chatformatting') || {})['hide' + obj.cmd];
 			switch (obj.cmd) {
-			    case 'img':
-			    case 'imgns':
-				let hid = (Dex.prefs('chatformatting') || {})['hide' + obj.cmd];
-				const hidden = `<details ontoggle="this.children[1].src = '${obj.url}';"><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img style="max-width: 400px; max-height: 400px;"/></details>`
-				const shown = `<details open><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img src="${obj.url}" style="max-width: 400px; max-height: 400px;"/></details>`
-				divHTML = BattleLog.sanitizeHTML(!hid ? hidden : shown);
-				this.add(['c', obj.name, '/me uploaded an image:']);
-				break;
+				case 'img':
+				case 'imgns':
+					const hidden = `<details ontoggle="this.children[1].src = '${obj.url}';"><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img style="max-width: 400px; max-height: 400px;"/></details>`
+					const shown = `<details open><summary>Image (${obj.cmd == 'img' ? 'Worksafe' : 'NSFW'})</summary><img src="${obj.url}" style="max-width: 400px; max-height: 400px;"/></details>`
+					divHTML = BattleLog.sanitizeHTML(!hid ? hidden : shown);
+					this.add(['c', obj.name, '/me uploaded an image:']);
+					break;
+				case 'yt': {
+					const hidden = `<details ontoggle="this.children[1].src = 'https://www.youtube.com/watch?v=${obj.youtubeId}';"><summary>YouTube Video</summary><youtube /></details>`
+					const shown = `<details open><summary>YouTube Video</summary><youtube src="https://www.youtube.com/watch?v=${obj.youtubeId}"/></details>`
+					this.add(['c', obj.name, '/me posted a YouTube video:']);
+					this.add(['raw', BattleLog.sanitizeHTML(!hid ? hidden : shown)]);
+				}
 			}
 			break;
 

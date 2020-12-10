@@ -675,6 +675,7 @@
 
 			buf += '<p><label class="optlabel"><input type="checkbox" name="img"'   + (cur.hideimg   ? 'checked' : '') + ' /> Automatically expand Worksafe images</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="imgns"' + (cur.hideimgns ? 'checked' : '') + ' /> Automatically expand NSFW images</label></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="yt"' + (cur.hideyt ? 'checked' : '') + ' /> Automatically expand YouTube videos</label></p>';
 			buf += '<p><button name="close">Close</button></p>';
 			this.$el.html(buf);
 		},
