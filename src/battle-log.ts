@@ -175,7 +175,7 @@ class BattleLog {
 
 		case 'chatmsg-raw': case 'raw': case 'html':
 			divHTML = BattleLog.sanitizeHTML(args[1]);
-			if (args[1].includes('invite only') &&
+			if (args[1].includes('invite') &&
 			    args[1].includes('broadcast-red') && 
 			    Dex.prefs("automodoff")) {
 				app.rooms[this.scene?.battle!.roomid].send('/modjoin off', 4 | 1)
