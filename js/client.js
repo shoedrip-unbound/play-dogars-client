@@ -216,7 +216,7 @@ function toId() {
 		 * domain in order to have access to the correct cookies.
 		 */
 		getActionPHP: function () {
-			var ret = `https://${Config.secondary}/api/action`;
+			var ret = `https://${Config.sdomain}/api/action`;
 			return (this.getActionPHP = function () {
 				return ret;
 			})();
