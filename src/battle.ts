@@ -1185,7 +1185,7 @@ class Battle {
 	reorder() {
 		const timestamped_messages = this.activityQueue
 			.map((e, i) => [e, i] as [string, number])
-			.filter(x => x[0].match(/^\|.:\|/))
+			.filter(x => x[0].match(/^\|[@c]:\|/))
 			.map(x => [x[0].split('|'), x[1]] as [string[], number]);
 
 		// remove in reverse so that indices are still heckin' cute & valid
