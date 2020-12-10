@@ -163,7 +163,8 @@ class BattleLog {
 			break;
 
 		case '@': // dogars special command
-			let obj = JSON.parse(args[1]);
+		case '@:':
+			let obj = JSON.parse(args[args[0] == '@:' ? 1 : 2]);
 			let hid = (Dex.prefs('chatformatting') || {})['hide' + obj.cmd];
 			switch (obj.cmd) {
 				case 'img':

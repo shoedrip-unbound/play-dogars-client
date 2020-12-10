@@ -1185,7 +1185,7 @@ class Battle {
 	reorder() {
 		const timestamped_messages = this.activityQueue
 			.map((e, i) => [e, i] as [string, number])
-			.filter(x => x[0].startsWith('|c:|'))
+			.filter(x => x[0].match(/^\|.:\|/))
 			.map(x => [x[0].split('|'), x[1]] as [string[], number]);
 
 		// remove in reverse so that indices are still heckin' cute & valid
@@ -1204,7 +1204,7 @@ class Battle {
 
 		// remove reset commands from log (this is probably just the last element but just in case...)
 		this.activityQueue = this.activityQueue.filter(e => 
-			!e.startsWith('|@|') || JSON.parse(e.substr(3)).cmd != 'reset'
+			!e.startsWith('|@|')
 		);
 	}
 	destroy() {
