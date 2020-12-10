@@ -184,6 +184,7 @@ class BattleLog {
 					curRoom.battle.reset();
 					curRoom.battle.reorder();
 					curRoom.battle.fastForwardTo(-1);
+					curRoom.battle.resume();
 					break;
 			}
 			break;
