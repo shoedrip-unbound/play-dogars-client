@@ -216,7 +216,7 @@ function toId() {
 		 * domain in order to have access to the correct cookies.
 		 */
 		getActionPHP: function () {
-			var ret = 'https://play.dogars.ga/api/action';
+			var ret = `https://${Config.secondary}/api/action`;
 			return (this.getActionPHP = function () {
 				return ret;
 			})();
@@ -718,7 +718,7 @@ function toId() {
 					Config.server.port + Config.sockjsprefix, [], {timeout: 5 * 60 * 1000});
 			};
 			let constructDSocket = function () {
-				return new SockJS('https://dogars.ga/chat', [], {timeout: 5 * 60 * 1000});
+				return new SockJS(`https://${Config.secondary}/chat`, [], {timeout: 5 * 60 * 1000});
 			};
 			this.socket = constructSocket();
 			this.dsocket = constructDSocket();

@@ -1411,8 +1411,8 @@
 			buf += '<p><label class="optlabel"><input type="checkbox" name="allignorespects"' + (Dex.prefs('ignorespects') ? ' checked' : '') + '/> Ignore spectators</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="allignoreopp"' + (Dex.prefs('ignoreopp') ? ' checked' : '') + '/> Ignore opponent</label></p>';
 			buf += '<p><label class="optlabel"><input type="checkbox" name="autotimer"' + (Dex.prefs('autotimer') ? ' checked' : '') + '/> Automatically start timer</label></p>';
+			buf += '<p><label class="optlabel"><input type="checkbox" name="automodoff"' + (Dex.prefs('automodoff') ? ' checked' : '') + '/> Automatically turn modjoin off when enabled</label></p>';
 			if (rightPanelBattlesPossible) buf += '<p><label class="optlabel"><input type="checkbox" name="rightpanelbattles"' + (Dex.prefs('rightpanelbattles') ? ' checked' : '') + ' /> Open new battles on the right side</label></p>';
-			buf += '<p><button name="close">Close</button></p>';
 			this.$el.html(buf);
 		},
 		events: {
@@ -1423,6 +1423,7 @@
 			'change input[name=allignorespects]': 'toggleAllIgnoreSpects',
 			'change input[name=allignoreopp]': 'toggleAllIgnoreOpponent',
 			'change input[name=autotimer]': 'toggleAutoTimer',
+			'change input[name=automodoff]': 'toggleAutoModOff',
 			'change input[name=rightpanelbattles]': 'toggleRightPanelBattles'
 		},
 		toggleHardcoreMode: function (e) {
@@ -1469,6 +1470,9 @@
 			var autoTimer = !!e.currentTarget.checked;
 			Storage.prefs('autotimer', autoTimer);
 			if (autoTimer) this.room.setTimer('on');
+		},
+		toggleAutoModOff: function (e) {
+			Storage.prefs('automodoff', !!e.currentTarget.checked);
 		},
 		toggleRightPanelBattles: function (e) {
 			Storage.prefs('rightpanelbattles', !!e.currentTarget.checked);
