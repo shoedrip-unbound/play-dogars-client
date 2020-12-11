@@ -767,6 +767,11 @@ class BattleLog {
 			'form::data-send': 0,
 			'button::data-send': 0,
 			'details::ontoggle': 0,
+			'youtube::src': 0,
+			'iframe::src': 0,
+			'iframe::allowfullscreen': 0,
+			'iframe::allow': 0,
+			'iframe::frameborder': 0,
 			'*::aria-label': 0,
 			'*::aria-hidden': 0,
 		});
