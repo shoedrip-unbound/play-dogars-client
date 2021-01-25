@@ -1132,6 +1132,33 @@ class Battle {
 		}
 		return false;
 	}
+
+	reorder() {
+		const timestamped_messages = this.stepQueue
+			.map((e, i) => [e, i] as [string, number])
+			.filter(x => x[0].match(/^\|[@c]:\|/))
+			.map(x => [x[0].split('|'), x[1]] as [string[], number]);
+
+		// remove in reverse so that indices are still heckin' cute & valid
+		for (let i = timestamped_messages.length - 1; i >= 0; --i) {
+			this.stepQueue.splice(timestamped_messages[i][1], 1);
+		}
+
+		// insert back all messages before the next highest timestamp
+		// todo: optimize because this is slow as shit
+		while (timestamped_messages.length) {
+			const msg = timestamped_messages.splice(0, 1)[0];
+			const nextturn = this.stepQueue
+				.findIndex(e => e.startsWith('|t:|') && +e.substr(4) >= +msg[0][2]);
+			this.stepQueue.splice(nextturn, 0, msg[0].join('|'));
+		}
+
+		// remove reset commands from log (this is probably just the last element but just in case...)
+		this.stepQueue = this.stepQueue.filter(e => 
+			!e.startsWith('|@|')
+		);
+	}
+
 	reset() {
 		this.paused = true;
 		this.scene.pause();
@@ -1181,7 +1208,7 @@ class Battle {
 	log(args: Args, kwArgs?: KWArgs, preempt?: boolean) {
 		this.scene.log.add(args, kwArgs, preempt);
 	}
-
+	
 	resetToCurrentTurn() {
 		this.seekTurn(this.ended ? Infinity : this.turn, true);
 	}
@@ -3348,7 +3375,7 @@ class Battle {
 	}
 
 	run(str: string, preempt?: boolean) {
-		if (!preempt && this.preemptStepQueue.length && str === this.preemptStepQueue[0]) {
+		if (!preempt && this.preemptStepQueue.length && this.preemptStepQueue.includes(str)) {
 			this.preemptStepQueue.shift();
 			this.scene.preemptCatchup();
 			return;
