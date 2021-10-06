@@ -175,7 +175,7 @@ class BattleLog {
 					this.add(['c', obj.name, '/me uploaded an image:']);
 					break;
 				case 'yt': {
-					const hidden = `<details ontoggle="this.children[1].src = 'https://www.youtube.com/embed/${obj.youtubeId}';"><summary>YouTube Video</summary><youtube /></details>`
+					const hidden = `<details><summary>YouTube Video</summary><youtube src="https://www.youtube.com/embed/${obj.youtubeId}"/></details>`
 					const shown = `<details open><summary>YouTube Video</summary><youtube src="https://www.youtube.com/embed/${obj.youtubeId}"/></details>`
 					this.add(['c', obj.name, '/me posted a YouTube video:']);
 					this.add(['raw', BattleLog.sanitizeHTML(!hid ? hidden : shown)]);
